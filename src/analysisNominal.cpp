@@ -79,8 +79,11 @@ void data::runNominal(string fout, double threshold) {
 		//1.2. Nominal pass: scan cis-window & compute statistics
 		for (int g = 0 ; g < targetGenotypes.size() ; g ++) {
 			double corr = getCorrelation(genotype_orig[targetGenotypes[g]], phenotype_orig[p]);
-			double pval = getPvalue(corr, sample_count - 2 - covariate_count);
+			double df = sample_count - 2 - covariate_count;
+			double tstat2 = getTstat2(corr, df);
+			double pval = getPvalueFromTstat2(tstat2, df);
 			double slope = getSlope(corr, phenotype_sd[p], genotype_sd[targetGenotypes[g]]);
+			double slope_se = abs(slope) / sqrt(tstat2);
 			if (pval <= threshold ) {
 				fdo << phenotype_id[p];
 				fdo << " " << genotype_id[targetGenotypes[g]];
@@ -88,6 +91,7 @@ void data::runNominal(string fout, double threshold) {
 				fdo << " " << corr;
 				fdo << " " << pval;
 				fdo << " " << slope;
+				fdo << "\t" << slope_se;
 				fdo << endl;
 			}
 		}
