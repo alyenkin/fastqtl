@@ -1,7 +1,7 @@
 FastQTL
 ---------
 
-Modified version of FastQTL (Ongen, H. et al., 2016) that handles structural variants
+Modified version of FastQTL (Ongen, H. et al., 2016) that handles structural variants and outputs the standard error of the regression slope
 
 [Ongen, H., Buil, A., Brown, A. A., Dermitzakis, E. T. & Delaneau, O. Fast and efficient QTL mapper for thousands of molecular phenotypes. Bioinformatics 32, 1479–1485 (2016).](http://bioinformatics.oxfordjournals.org/content/32/10/1479)
 
