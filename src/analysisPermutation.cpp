@@ -146,12 +146,16 @@ void data::runPermutation(string fout, vector < int > nPermutations) {
 		//1.6. Writing results
 		if (targetGenotypes.size() > 0 && bestIndex >= 0) {
 			double pval_fdo = getPvalue(bestCorr, true_df);
-			double pval_nom = getPvalue(bestCorr, sample_count - 2 - ((covariate_count>0)?covariate_engine->nCovariates():0));
+			double df = sample_count - 2 - ((covariate_count>0)?covariate_engine->nCovariates():0);
+			double tstat2 = getTstat2(bestCorr, df);
+			double pval_nom = getPvalueFromTstat2(tstat2, df);
 			double pval_slope = getSlope(bestCorr, phenotype_sd[p], genotype_sd[bestIndex]);
+			double slope_se = abs(pval_slope) / sqrt(tstat2);
 			fdo << " " << genotype_id[bestIndex];
 			fdo << " " << bestDistance;
 			fdo << " " << pval_nom;
 			fdo << " " << pval_slope;
+			fdo << " " << slope_se;
 			fdo << " " << (nBetterCorrelation + 1) * 1.0 / (countPermutations + 1.0);
 			fdo << " " << pbeta(pval_fdo, beta_shape1, beta_shape2, 1, 0);
 		} else fdo << " NA NA NA NA NA NA";
