@@ -86,11 +86,11 @@ void data::runNominal(string fout, double threshold) {
 			double slope_se = abs(slope) / sqrt(tstat2);
 			if (pval <= threshold ) {
 				fdo << phenotype_id[p];
-				fdo << " " << genotype_id[targetGenotypes[g]];
-				fdo << " " << targetDistances[g];
-				fdo << " " << corr;
-				fdo << " " << pval;
-				fdo << " " << slope;
+				fdo << "\t" << genotype_id[targetGenotypes[g]];
+				fdo << "\t" << targetDistances[g];
+				fdo << "\t" << corr;
+				fdo << "\t" << pval;
+				fdo << "\t" << slope;
 				fdo << "\t" << slope_se;
 				fdo << endl;
 			}
