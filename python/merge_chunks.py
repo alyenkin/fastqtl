@@ -69,7 +69,7 @@ if __name__=='__main__':
     else:  # nominal
         header = [
             'gene_id',
-            'variant_id', 'tss_distance', 'corr',
+            'variant_id', 'tss_distance', 'corr', 'tstat',
             'pval_nominal', 'slope', 'slope_se',
         ]
         prefix = args.prefix+'.allpairs'
