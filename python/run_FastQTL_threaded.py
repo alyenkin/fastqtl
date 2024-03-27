@@ -19,10 +19,7 @@ def cd(cd_path):
     os.chdir(saved_path)
 
 def get_cmd(args, chunk):
-    cmd = os.path.join(fastqtl_dir, 'bin', 'fastQTL')+' --vcf '+args.vcf+' --bed '+args.bed+' --window '+args.window \
-        +' --maf-threshold '+args.maf_threshold \
-        +' --ma-sample-threshold '+args.ma_sample_threshold \
-        +' --interaction-maf-threshold '+args.interaction_maf_threshold
+    cmd = os.path.join(fastqtl_dir, 'bin', 'fastQTL')+' --vcf '+args.vcf+' --bed '+args.bed+' --window '+args.window 
     if args.covariates:
         cmd += ' --cov '+args.covariates
     if args.phenotype_groups:
@@ -33,8 +30,6 @@ def get_cmd(args, chunk):
         cmd += ' --permute '+' '.join([str(p) for p in args.permute])
     if args.interaction:
         cmd += ' --interaction '+args.interaction
-    if args.best_variant_only:
-        cmd += ' --report-best-only'
     if args.seed:
         cmd += ' --seed '+args.seed
     if args.exclude_samples:
@@ -65,12 +60,8 @@ parser.add_argument('--phenotype_groups', default='', help='File with mapping of
 parser.add_argument('--chunks', default='100', help='Number of chunks, minimum: #chromosomes')
 parser.add_argument('--permute', default=None, type=str, nargs='+', help='Number of permutations, e.g. [1000, 10000] (adaptive). Default: None (run nominal pass)')
 parser.add_argument('--interaction', default=None, type=str, help='Interaction term')
-parser.add_argument('--best_variant_only', action='store_true')
 parser.add_argument('--window', default='1e6', help='Cis-window size. Default values is 1Mb (1e6).')
 parser.add_argument('--threshold', default='', help='Output only significant phenotype-variant pairs with a p-value below threshold (default 1)')
-parser.add_argument('--maf_threshold', default='0.0', help='Include only genotypes with minor allele frequency >=maf_threshold (default 0)')
-parser.add_argument('--ma_sample_threshold', default='0', help='Include only genotypes with >=ma_sample_threshold samples carrying the minor allele (default 0)')
-parser.add_argument('--interaction_maf_threshold', default='0', help='MAF threshold for interactions, applied to lower and upper half of samples')
 parser.add_argument('--fdr', default=0.05, type=np.double)
 parser.add_argument('--seed', default=None, help='Random number generator seed')
 parser.add_argument('--exclude_samples', default=None, help='')
