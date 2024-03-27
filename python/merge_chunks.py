@@ -55,8 +55,8 @@ if __name__=='__main__':
     print('['+datetime.now().strftime("%b %d %H:%M:%S")+'] Merging chunks', flush=True)
     if args.permute:
         header = [
-            'gene_id', 'num_var', 'beta_shape1', 'beta_shape2', 'true_df', 'pval_true_df',
-            'variant_id', 'tss_distance', 'ma_samples', 'ma_count', 'maf', 'ref_factor',
+            'gene_id', 'num_var', 'beta_shape1', 'beta_shape2', 'true_df',
+            'variant_id', 'tss_distance',
             'pval_nominal', 'slope', 'slope_se', 'pval_perm', 'pval_beta'
         ]
         with open(args.chunk_list) as f:
@@ -69,7 +69,7 @@ if __name__=='__main__':
     else:  # nominal
         header = [
             'gene_id',
-            'variant_id', 'tss_distance', 'ma_samples', 'ma_count', 'maf',
+            'variant_id', 'tss_distance', 'corr',
             'pval_nominal', 'slope', 'slope_se',
         ]
         prefix = args.prefix+'.allpairs'
