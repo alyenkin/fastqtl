@@ -38,33 +38,59 @@ void data::runPermutation(string fout, vector < int > nPermutations) {
 		//1.1. Enumerate all genotype-phenotype pairs within cis-window
 		vector < int > targetGenotypes, targetDistances;
 		for (int g = 0 ; g < genotype_count ; g ++) {
-                  int cisdistance;
-                  int startdistance = genotype_pos[g] - phenotype_start[p];
-                  int enddistance = genotype_end[g] - phenotype_start[p];
+                int cisdistance_tostart;
+                int cisdistance_toend;
+                int cisdistance;
+                int distance_startvar_startpheno = genotype_pos[g] - phenotype_start[p];
+                int distance_endvar_startpheno = genotype_end[g] - phenotype_start[p];
 
-                  // for INVs ignore the span and define the cisdistance
-                  // as the distance from the breakpoints to the phenotype_start
-                  if (genotype_vartype[g].compare("INV") == 0) {
-                    if (abs(startdistance) <= abs(enddistance))
-                      cisdistance = startdistance;
-                    else
-                      cisdistance = enddistance;
+                int distance_startvar_endpheno = genotype_pos[g] - phenotype_end[p];
+                int distance_endvar_endpheno = genotype_end[g] - phenotype_end[p];
+
+                // for INVs ignore the span and define the cisdistance
+                // as the distance from the breakpoints to the phenotype_start
+                if (genotype_vartype[g].compare("INV") == 0) {
+                  if (abs(distance_startvar_startpheno) <= abs(distance_endvar_startpheno)) {
+                    cisdistance_tostart = distance_startvar_startpheno;
+                  } else {
+                    cisdistance_tostart = distance_endvar_startpheno;
                   }
 
-                  // for the variants with span (DEL, DUP, MEI), cisdistance is zero
-                  // if the phenotype_start falls within the span, and the distance to
-                  // the closest edge otherwise
-                  // BNDs get processed here as well, but their END coordinate is the
-                  // same as the START coordinate.
-                  else {
-                    if (startdistance < 0 && enddistance > 0) { // if gene is within SV, then cis distance is 0
-                      cisdistance = 0;
-                    }
-                    else if (startdistance >= 0)
-                      cisdistance = startdistance;
-                    else
-                      cisdistance = enddistance;
+                  if (abs(distance_startvar_endpheno) <= abs(distance_endvar_endpheno)) {
+                    cisdistance_toend = distance_startvar_endpheno;
+                  } else {
+                    cisdistance_toend = distance_endvar_endpheno;
                   }
+                }
+
+                // for the variants with span (DEL, DUP, MEI), cisdistance_tostart is zero
+                // if the phenotype_start falls within the span, and the distance to
+                // the closest edge otherwise
+                // BNDs get processed here as well, but their END coordinate is the
+                // same as the START coordinate.
+                else {
+                  if (distance_startvar_startpheno < 0 && distance_endvar_startpheno > 0) { // if gene is within SV, then cis distance is 0
+                    cisdistance_tostart = 0;
+                  } else if (distance_startvar_startpheno >= 0) {
+                    cisdistance_tostart = distance_startvar_startpheno;
+                  } else {
+                    cisdistance_tostart = distance_endvar_startpheno;
+                  }
+
+                  if (distance_startvar_endpheno < 0 && distance_endvar_endpheno > 0) {
+                    cisdistance_toend = 0;
+                  } else if (distance_startvar_endpheno >= 0) {
+                    cisdistance_toend = distance_startvar_endpheno;
+                  } else {
+                    cisdistance_toend = distance_endvar_endpheno;
+                  }
+                }
+
+                if (abs(cisdistance_tostart) < abs(cisdistance_toend)) {
+                  cisdistance = cisdistance_tostart;
+                } else {
+                  cisdistance = cisdistance_toend;
+                }
 
                   if (abs(cisdistance) <= cis_window) {
                     targetGenotypes.push_back(g);
