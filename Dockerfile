@@ -5,6 +5,7 @@ RUN cd /opt \
   && unzip master.zip \
   && mv fastqtl-master fastqtl-sv \
   && cd fastqtl-sv \
+  && mkdir obj \
   && mkdir bin \
   && make cleanall \
   && make RMATH=$RMATH
