@@ -89,7 +89,9 @@ void data::runNominal(string fout, double threshold) {
         }
 		  }
 
-      if (abs(cisdistance_tostart) < abs(cisdistance_toend)) {
+      if (cisdistance_tostart > 0 && cisdistance_toend < 0) {
+        cisdistance = 0;
+      } else if (abs(cisdistance_tostart) < abs(cisdistance_toend)) {
         cisdistance = cisdistance_tostart;
       } else {
         cisdistance = cisdistance_toend;
